@@ -1,0 +1,262 @@
+{
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "description": "app.go\nPackage  Book API.",
+    "contact": {
+      "name": "Vinod Pandeey",
+      "email": "vinod.pandey1@gmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "host": "localhost:8080",
+  "paths": {
+    "/book": {
+      "post": {
+        "description": "Duplicates are allowed",
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Creates a new book in the store.",
+        "operationId": "createBook",
+        "parameters": [
+          {
+            "description": "Book to add to the store",
+            "name": "book",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Book"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "book response",
+            "schema": {
+              "$ref": "#/responses/bookRes"
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "schema": {
+              "$ref": "#/responses/badReq"
+            }
+          }
+        }
+      }
+    },
+    "/book/{id}": {
+      "get": {
+        "description": "if the book does not have access to the book",
+        "produces": [
+          "application/json",
+          "application/xml",
+          "text/xml",
+          "text/html"
+        ],
+        "summary": "Returns a BOOK based on a single ID,",
+        "operationId": "getBook",
+        "parameters": [
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "ID of book to fetch",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "book response",
+            "schema": {
+              "$ref": "#/definitions/Book"
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "schema": {
+              "$ref": "#/responses/badReq"
+            }
+          }
+        }
+      },
+      "put": {
+        "description": "Duplicates are allowed",
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Update a  book in the store.",
+        "operationId": "updateBook",
+        "parameters": [
+          {
+            "description": "Book to add to the store",
+            "name": "book",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Book"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "book response",
+            "schema": {
+              "$ref": "#/definitions/Book"
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "schema": {
+              "$ref": "#/responses/badReq"
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "deletes a single Book based on the ID supplied",
+        "operationId": "deleteBook",
+        "parameters": [
+          {
+            "type": "integer",
+            "format": "int64",
+            "description": "ID of Book to delete",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Book deleted"
+          },
+          "default": {
+            "description": "unexpected error",
+            "schema": {
+              "$ref": "#/responses/badReq"
+            }
+          }
+        }
+      }
+    },
+    "/books": {
+      "get": {
+        "description": "Returns all books from the system",
+        "produces": [
+          "application/json",
+          "application/xml",
+          "text/xml",
+          "text/html"
+        ],
+        "operationId": "getBooks",
+        "responses": {
+          "200": {
+            "description": "book response",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Book"
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/responses/badReq"
+          },
+          "404": {
+            "$ref": "#/responses/notFoundReq"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Book": {
+      "description": "{\n\"id\": \"1\",\n\"author\": \"james\",\n\"title\":  \"bolt\",\n\"isbn\":  \"james1234\"\n\"release_date\": \"2016-10-10\"\n}",
+      "type": "object",
+      "title": "Book Json request payload is as follows,",
+      "properties": {
+        "author": {
+          "type": "string",
+          "x-go-name": "Author"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "x-go-name": "ID"
+        },
+        "isbn": {
+          "type": "string",
+          "x-go-name": "ISBN"
+        },
+        "release_date": {
+          "type": "string",
+          "x-go-name": "ReleaseDate"
+        },
+        "title": {
+          "type": "string",
+          "x-go-name": "Title"
+        }
+      },
+      "x-go-package": "github.com/vinod/main/model"
+    }
+  },
+  "responses": {
+    "badReq": {
+      "description": "Error Bad Request",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "description": "HTTP status code 400 -  Bad Request",
+            "type": "integer",
+            "format": "int64",
+            "x-go-name": "Code"
+          }
+        }
+      }
+    },
+    "bookRes": {
+      "description": "Book response payload",
+      "schema": {
+        "$ref": "#/definitions/Book"
+      }
+    },
+    "notFoundReq": {
+      "description": "Error Not Found",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "description": "HTTP status code 404 -  Not Found",
+            "type": "integer",
+            "format": "int64",
+            "x-go-name": "Code"
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "api_key": {
+      "type": "apiKey",
+      "name": "KEY",
+      "in": "header"
+    }
+  },
+  "security": [
+    {
+      "api_key": []
+    }
+  ]
+}
